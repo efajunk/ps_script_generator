@@ -1,9 +1,8 @@
 # initiate func, that will make a rows of scripts for each folder
 def script_constructor(list_of_paths, filename, group_asking=None):
     for path in list_of_paths:
+        group_asking = input(f'Какую группу использовать для {path}(домен по умолчанию oasiscatalog): ')
         ps_get_acl = f'$acl = Get-Acl {path};'
-        if group_asking is None:
-            group_asking = input(f'Какую группу использовать для {path}(с указанием домена через \): ')
         ps_access_rule = f'$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule("oasiscatalog\{group_asking}", "ReadAndExecute", "Allow");'
         ps_set_access_rule = '$acl.SetAccessRule($AccessRule);'
         ps_set_acl = f'$acl | Set-Acl {path};'
@@ -20,7 +19,7 @@ def get_path(filename):
         for i in file.readlines():
             if "Path" in i:
                 index_slice_start_from = i.rfind(":")
-                list_of_paths.append(i[index_slice_start_from - 1:])
+                list_of_paths.append(i[index_slice_start_from - 1:].strip())
         return list_of_paths
 
 def write_row(filename, row):
@@ -28,6 +27,8 @@ def write_row(filename, row):
         file.writelines(row + '\n')
     pass
 
+
 file = 'acl_data.txt'
 output_file = 'script_output.txt'
-script_constructor(get_folders(file), output_file)
+print(get_path(file))
+script_constructor(get_path(file), output_file)
