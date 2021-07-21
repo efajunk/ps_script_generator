@@ -34,8 +34,8 @@ def get_path(filename):
 #         index_slice_start_from = 0
 #         list_of_access = []
 #         for i in file.readlines():
-#             if path in i:
-#                 while 'Audit' not in i:
+#             while 'Audit' not in i:
+#                 if path in i:
 #                     index_slice_start_from = i.rfind(":")
 #                     list_of_access.append(i[index_slice_start_from - 1:].strip())
 #         return list_of_access
@@ -50,5 +50,4 @@ file = 'acl_data.txt'
 # default output filename in folder with script
 output_file = 'script_output.txt'
 
-print(get_path(file))
 script_constructor(get_path(file), output_file)
