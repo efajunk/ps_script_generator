@@ -1,13 +1,15 @@
 # initiate func, that will make a rows of scripts for each folder
 def script_constructor(list_of_paths, filename, group_asking=None, set_group=None):
     write_row(filename, '# Start\n')
+    enter_message = input('Set one group for all folders? (enter to skip): ')
     for path in list_of_paths:
         while True:
+            if enter_message:
+                set_group = True
             if set_group is None:
-                if set_group := input('Set one group for all folders? (enter to skip): '):
-                    group_asking = input(f'Group to add access for the rest of folders: (q - exit, s - skip): ')
-                else:
-                    group_asking = input(f'Group to add access for: "{path}" (q - exit, s - skip): ')
+                group_asking = input(f'Group to add access for: "{path}" (q - exit, s - skip): ')
+            else:
+                group_asking = input(f'Group to add access for the rest of folders: (enter to skip): ')
             if group_asking == 'q':
                 return
             elif group_asking == 's':
