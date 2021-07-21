@@ -45,8 +45,10 @@ def write_row(filename, row):
         file.writelines(row + '\n')
     pass
 
-
+# default filename in folder with script
 file = 'acl_data.txt'
+# default output filename in folder with script
 output_file = 'script_output.txt'
+
 print(get_path(file))
 script_constructor(get_path(file), output_file)
