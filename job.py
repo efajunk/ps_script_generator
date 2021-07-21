@@ -2,13 +2,17 @@
 def script_constructor(list_of_paths, filename, group_asking=None):
     for path in list_of_paths:
         while True:
-            group_asking = input(f'Group to add access for: {path}(домен по умолчанию oasiscatalog): ')
+            group_asking = input(f'Group to add access for: "{path}"(домен по умолчанию oasiscatalog)(q - exit, s - skip): ')
+            if group_asking == 'q':
+                return
+            elif group_asking == 's':
+                break
             # if group_asking == 'ag':
             #     print([i for i in get_access(filename, path)])
-            ps_get_acl = f'$acl = Get-Acl {path};'
+            ps_get_acl = f'$acl = Get-Acl "{path}";'
             ps_access_rule = f'$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule("oasiscatalog\{group_asking}", "ReadAndExecute", "Allow");'
             ps_set_access_rule = '$acl.SetAccessRule($AccessRule);'
-            ps_set_acl = f'$acl | Set-Acl {path};'
+            ps_set_acl = f'$acl | Set-Acl "{path}";'
             rows_list = [ps_get_acl, ps_access_rule, ps_set_access_rule, ps_set_acl]
             for row in rows_list:
                 write_row(filename, row)
@@ -46,7 +50,7 @@ def write_row(filename, row):
     pass
 
 # default filename in folder with script
-file = 'acl_data.txt'
+file = 'acl_share_Обмен.txt'
 # default output filename in folder with script
 output_file = 'script_output.txt'
 
