@@ -1,8 +1,13 @@
 # initiate func, that will make a rows of scripts for each folder
-def script_constructor(list_of_paths, filename, group_asking=None):
+def script_constructor(list_of_paths, filename, group_asking=None, set_group=None):
+    write_row(filename, '# Start\n')
     for path in list_of_paths:
         while True:
-            group_asking = input(f'Group to add access for: "{path}"(домен по умолчанию oasiscatalog)(q - exit, s - skip): ')
+            if set_group is None:
+                if set_group := input('Set one group for all folders? (enter to skip): '):
+                    group_asking = input(f'Group to add access for the rest of folders: (q - exit, s - skip): ')
+                else:
+                    group_asking = input(f'Group to add access for: "{path}" (q - exit, s - skip): ')
             if group_asking == 'q':
                 return
             elif group_asking == 's':
@@ -16,8 +21,9 @@ def script_constructor(list_of_paths, filename, group_asking=None):
             rows_list = [ps_get_acl, ps_access_rule, ps_set_access_rule, ps_set_acl]
             for row in rows_list:
                 write_row(filename, row)
-            if input(f'Is there other groups to add?(enter to skip): '):
-                continue
+            if set_group is None:
+                if input(f'Is there other groups to add?(enter to skip): '):
+                    continue
             break
     return
 
@@ -49,8 +55,9 @@ def write_row(filename, row):
         file.writelines(row + '\n')
     pass
 
+file = input('Enter file name, or path to: ')
 # default filename in folder with script
-file = 'acl_share_Обмен.txt'
+# file = 'acl_share_Обмен.txt'
 # default output filename in folder with script
 output_file = 'script_output.txt'
 
